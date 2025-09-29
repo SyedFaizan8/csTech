@@ -1,0 +1,43 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    email     String   @unique
+    password  String
+    name      String?
+    createdAt DateTime @default(now())
+}
+
+model Agent {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    email     String   @unique
+    phone     String
+    password  String
+    createdAt DateTime @default(now())
+}
+
+model ListItem {
+    id           String      @id @default(auto()) @map("_id") @db.ObjectId
+    firstName    String
+    phone        String
+    notes        String?
+    createdAt    DateTime    @default(now())
+    Assignment   Assignment? @relation(fields: [assignmentId], references: [id])
+    assignmentId String?     @db.ObjectId
+}
+
+model Assignment {
+    id        String     @id @default(auto()) @map("_id") @db.ObjectId
+    agentId   String     @db.ObjectId
+    items     ListItem[]
+    createdAt DateTime   @default(now())
+}
