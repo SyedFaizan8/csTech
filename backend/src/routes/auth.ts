@@ -26,6 +26,7 @@ router.post("/login", async (req, res) => {
 // You may remove in production or protect with env flag
 router.post("/seed-admin", async (req, res) => {
     const { email, password, name } = req.body;
+    console.log(email, password)
     if (!email || !password) return res.status(400).json({ message: "Missing" });
     const hashed = await bcrypt.hash(password, 10);
     const u = await prisma.adminUser.create({ data: { email, password: hashed, name } });

@@ -1,9 +1,14 @@
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions, Secret } from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "change_me";
+const JWT_SECRET: Secret = (process.env.JWT_SECRET || "change_me") as Secret;
 
-export function signJwt(payload: object, expiresIn = "7d") {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn });
+export function signJwt(
+    payload: object,
+    expiresIn: SignOptions["expiresIn"] = "7d"
+): string {
+    const opts: SignOptions = { expiresIn };
+    // jwt.sign accepts payload as string | object | Buffer
+    return jwt.sign(payload as string | object | Buffer, JWT_SECRET, opts);
 }
 
 export function verifyJwt<T>(token: string): T {

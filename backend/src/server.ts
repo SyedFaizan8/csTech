@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/auth";
-import agentRoutes from "./routes/agents";
-import uploadRoutes from "./routes/upload";
+import authRoutes from "./routes/auth.js";
+import agentRoutes from "./routes/agents.js";
+import uploadRoutes from "./routes/upload.js";
 
 const app = express();
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true
 }));
 app.use(express.json());
