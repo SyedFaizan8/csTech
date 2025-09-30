@@ -38,7 +38,7 @@ export default function FileDropzone({ onFile }: { onFile: (file: File, preview:
         }
 
         if (ext === 'csv') reader.readAsText(file)
-        else reader.readAsBinaryString(file as any)
+        else reader.readAsArrayBuffer(file)
 
     }, [onFile])
 

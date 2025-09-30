@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import Providers from "@/components/Providers";
+import ToastContainer from "@/components/ToastContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CSTech info tech",
+  title: "CSTech",
   description: "Agentic flow",
 };
 
@@ -27,13 +29,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-slate-800`}>
-        <div className="min-h-screen flex">
-          <Sidebar />
-          <div className="flex-1">
-            <Header />
-            <main className="p-6 max-w-7xl mx-auto">{children}</main>
+        <Providers>
+          <div className="min-h-screen flex">
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+              <Header />
+              <main className="p-6 max-w-7xl mx-auto w-full">{children}</main>
+              <footer className="text-center text-xs text-slate-400 py-6">© {new Date().getFullYear()}</footer>
+            </div>
           </div>
-        </div>
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   );

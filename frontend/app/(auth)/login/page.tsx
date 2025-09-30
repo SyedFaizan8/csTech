@@ -1,20 +1,24 @@
 'use client'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
+import api from '@/lib/api'
 import { useRouter } from 'next/navigation'
-
-type Form = { email: string; password: string }
+import { useAppDispatch } from '@/store/store'
+import { getCurrentUser } from '@/store/slices/authSlice'
+import { push } from '@/store/slices/notificationsSlice'
 
 export default function LoginPage() {
-    const { register, handleSubmit } = useForm<Form>()
+    const { register, handleSubmit, formState: { errors } } = useForm<{ email: string; password: string }>()
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
-    async function onSubmit(data: Form) {
+    async function onSubmit(data: any) {
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, data, { withCredentials: true })
+            await api.post('/api/auth/login', data)
+            await dispatch(getCurrentUser()).unwrap()
             router.push('/dashboard')
         } catch (err: any) {
-            alert(err?.response?.data?.message || 'Login failed')
+            dispatch(push({ id: String(Date.now()), type: 'error', message: err?.response?.data?.message || 'Login failed' }))
         }
     }
 
@@ -23,11 +27,16 @@ export default function LoginPage() {
             <div className="w-full max-w-md bg-white p-8 rounded-2xl card-shadow">
                 <h2 className="text-2xl font-semibold mb-4">Admin Login</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <input {...register('email')} placeholder="Email" className="w-full p-3 border rounded-lg" />
-                    <input {...register('password')} placeholder="Password" type="password" className="w-full p-3 border rounded-lg" />
+                    <div>
+                        <input {...register('email', { required: 'Email required' })} placeholder="Email" className="w-full p-3 border rounded-lg" />
+                        {errors.email && <div className="text-red-600 text-sm">{errors.email.message}</div>}
+                    </div>
+                    <div>
+                        <input {...register('password', { required: 'Password required' })} placeholder="Password" type="password" className="w-full p-3 border rounded-lg" />
+                        {errors.password && <div className="text-red-600 text-sm">{errors.password.message}</div>}
+                    </div>
                     <button className="w-full py-3 bg-indigo-600 text-white rounded-lg">Login</button>
                 </form>
-                <p className="mt-3 text-sm text-slate-500">Don't have an account? <a href="/signup" className="text-indigo-600">Sign up</a></p>
             </div>
         </div>
     )

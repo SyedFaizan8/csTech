@@ -1,18 +1,13 @@
 @import "tailwindcss";
 
-html,
-body,
-#__next {
-  height: 100%;
+body {
+  @apply antialiased;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%);
 }
-
 .card-shadow {
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+  border-radius: 12px;
 }
-
-/* small form inputs */
-input,
-textarea,
-select {
-  outline: none;
+.rounded-2xl {
+  border-radius: 16px;
 }

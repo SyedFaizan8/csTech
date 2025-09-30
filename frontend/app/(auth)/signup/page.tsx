@@ -1,21 +1,23 @@
 'use client'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
+import api from '@/lib/api'
 import { useRouter } from 'next/navigation'
-
-type Form = { name?: string; email: string; password: string }
+import { useAppDispatch } from '@/store/store'
+import { push } from '@/store/slices/notificationsSlice'
 
 export default function Signup() {
-    const { register, handleSubmit } = useForm<Form>()
+    const { register, handleSubmit } = useForm<{ name?: string; email: string; password: string }>()
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
-    async function onSubmit(data: Form) {
+    async function onSubmit(data: any) {
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/seed-admin`, data)
-            alert('Admin created. Now login.')
+            await api.post('/api/auth/signup', data)
+            dispatch(push({ id: String(Date.now()), type: 'success', message: 'Admin created. Please login.' }))
             router.push('/login')
         } catch (err: any) {
-            alert(err?.response?.data?.message || 'Signup failed')
+            dispatch(push({ id: String(Date.now()), type: 'error', message: err?.response?.data?.message || 'Signup failed' }))
         }
     }
 
@@ -29,7 +31,6 @@ export default function Signup() {
                     <input {...register('password')} placeholder="Password" type="password" className="w-full p-3 border rounded-lg" />
                     <button className="w-full py-3 bg-indigo-600 text-white rounded-lg">Create Admin</button>
                 </form>
-                <p className="mt-3 text-sm text-slate-500">Already have an account? <a href="/login" className="text-indigo-600">Login</a></p>
             </div>
         </div>
     )
