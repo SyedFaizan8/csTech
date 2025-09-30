@@ -6,16 +6,37 @@ export const getCurrentUser = createAsyncThunk('auth/me', async () => {
     return r.data.user
 })
 
+type AuthState = {
+    user: any | null
+    loading: boolean
+    checked: boolean
+}
+
+const initialState: AuthState = { user: null, loading: false, checked: false }
+
 const slice = createSlice({
     name: 'auth',
-    initialState: { user: null as any | null, loading: false },
+    initialState,
     reducers: {
-        logout(state) { state.user = null }
+        logout(state) {
+            state.user = null
+            state.checked = true // mark checked so we don't re-request and cause loops
+            state.loading = false
+        }
     },
-    extraReducers: (b) => {
-        b.addCase(getCurrentUser.pending, s => { s.loading = true })
-        b.addCase(getCurrentUser.fulfilled, (s, a) => { s.user = a.payload; s.loading = false })
-        b.addCase(getCurrentUser.rejected, s => { s.user = null; s.loading = false })
+    extraReducers: (builder) => {
+        builder
+            .addCase(getCurrentUser.pending, (s) => { s.loading = true })
+            .addCase(getCurrentUser.fulfilled, (s, a) => {
+                s.user = a.payload
+                s.loading = false
+                s.checked = true
+            })
+            .addCase(getCurrentUser.rejected, (s) => {
+                s.user = null
+                s.loading = false
+                s.checked = true // we tried and it failed — don't keep trying
+            })
     }
 })
 
