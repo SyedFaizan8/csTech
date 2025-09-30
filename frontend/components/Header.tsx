@@ -9,7 +9,6 @@ import { push } from '@/store/slices/notificationsSlice'
 export default function Header() {
     const router = useRouter()
     const dispatch = useAppDispatch()
-
     async function handleLogout() {
         try {
             await api.post('/api/auth/logout')
@@ -24,9 +23,12 @@ export default function Header() {
     return (
         <header className="bg-white border-b">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <div className="text-sm font-semibold">MERN Admin</div>
+                <div className="flex items-center gap-4">
+                    <div className="text-lg font-bold brand">MERN Admin</div>
+                    <div className="text-sm text-slate-500 hidden sm:block">Manage agents & lists</div>
+                </div>
                 <div className="flex items-center gap-3">
-                    <button onClick={handleLogout} className="px-3 py-1 text-sm rounded-md border">Logout</button>
+                    <button onClick={handleLogout} className="px-3 py-1 rounded-md border text-sm">Logout</button>
                 </div>
             </div>
         </header>

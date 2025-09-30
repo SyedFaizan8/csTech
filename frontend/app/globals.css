@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+/*
 body {
   @apply antialiased;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%);
@@ -10,4 +10,35 @@ body {
 }
 .rounded-2xl {
   border-radius: 16px;
+} */
+
+/* Beautiful base styles */
+:root {
+  --card-bg: #ffffff;
+  --muted: #64748b;
+}
+
+/* global body */
+html,
+body,
+#__next {
+  height: 100%;
+}
+body {
+  @apply antialiased bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900;
+}
+
+/* cards */
+.card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.06);
+}
+
+/* subtle utilities */
+.brand {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

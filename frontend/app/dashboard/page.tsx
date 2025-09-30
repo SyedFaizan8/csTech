@@ -16,9 +16,15 @@ export default function Dashboard() {
                     <Link href="/agents" className="px-4 py-2 border rounded-lg">Agents</Link>
                 </div>
             </div>
+
             <section className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                {agents.map(a => (<div key={a.id} className="bg-white p-4 rounded-2xl card-shadow"><h3>{a.name}</h3><p className="text-sm">{a.email}</p></div>))}
-                {agents.length === 0 && <div className="col-span-full bg-white p-6 rounded-2xl card-shadow">No agents yet</div>}
+                {agents.map(a => (
+                    <div key={a.id} className="bg-white p-4 rounded-2xl card">
+                        <h3 className="font-semibold">{a.name}</h3>
+                        <p className="text-sm text-slate-500">{a.email}</p>
+                    </div>
+                ))}
+                {agents.length === 0 && <div className="col-span-full bg-white p-6 rounded-2xl card">No agents yet</div>}
             </section>
         </div>
     )

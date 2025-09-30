@@ -2,10 +2,10 @@
 import React from 'react'
 
 export default function ConfirmModal({ open, title, description, onCancel, onConfirm }: {
-    open: boolean
-    title?: string
-    description?: string
-    onCancel: () => void
+    open: boolean;
+    title?: string;
+    description?: string;
+    onCancel: () => void;
     onConfirm: () => void
 }) {
     if (!open) return null

@@ -9,7 +9,9 @@ export const getCurrentUser = createAsyncThunk('auth/me', async () => {
 const slice = createSlice({
     name: 'auth',
     initialState: { user: null as any | null, loading: false },
-    reducers: { logout(state) { state.user = null } },
+    reducers: {
+        logout(state) { state.user = null }
+    },
     extraReducers: (b) => {
         b.addCase(getCurrentUser.pending, s => { s.loading = true })
         b.addCase(getCurrentUser.fulfilled, (s, a) => { s.user = a.payload; s.loading = false })

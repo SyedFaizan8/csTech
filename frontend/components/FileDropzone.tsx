@@ -7,7 +7,7 @@ export default function FileDropzone({ onFile }: { onFile: (file: File, preview:
         const file = acceptedFiles[0]
         if (!file) return
         const ext = file.name.split('.').pop()?.toLowerCase()
-        if (!['csv', 'xls', 'xlsx'].includes(ext || '')) return alert('Only csv/xls/xlsx allowed')
+        if (!['csv', 'xls', 'xlsx'].includes(ext || '')) return
 
         const reader = new FileReader()
         reader.onload = async (e) => {
@@ -25,7 +25,6 @@ export default function FileDropzone({ onFile }: { onFile: (file: File, preview:
                 })
                 onFile(file, preview)
             } else {
-                // lazy import xlsx
                 const XLSX = await import('xlsx')
                 const wb = XLSX.read(data as ArrayBuffer, { type: 'array' })
                 const sheet = wb.Sheets[wb.SheetNames[0]]
@@ -40,10 +39,10 @@ export default function FileDropzone({ onFile }: { onFile: (file: File, preview:
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple: false })
     return (
-        <div {...getRootProps()} className={`p-6 rounded-lg border-2 text-center ${isDragActive ? 'border-indigo-400 bg-indigo-50' : 'border-dashed bg-white'}`}>
+        <div {...getRootProps()} className={`p-6 rounded-2xl border-2 text-center ${isDragActive ? 'border-indigo-400 bg-indigo-50' : 'border-dashed bg-white'}`}>
             <input {...getInputProps()} />
-            <div className="font-semibold">Drag & drop your CSV/XLSX here</div>
-            <div className="text-sm text-slate-500">Only .csv, .xls, .xlsx — FirstName and Phone required</div>
+            <div className="text-lg font-semibold">Drag & drop CSV / Excel here</div>
+            <div className="text-sm text-slate-500 mt-1">Accepts .csv, .xls, .xlsx — needs FirstName & Phone</div>
         </div>
     )
 }
