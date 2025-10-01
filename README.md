@@ -203,13 +203,4 @@ Bob,+1987654321,Interested in premium plan
 
 ---
 
-## Optional improvements
-
-- Reassign leads automatically when an agent is deleted (rather than unassign).
-- Add pagination for assignments and agents.
-- Add background worker (Bull/Redis) for heavy processing if uploads get large.
-- Add unit/integration tests.
-
----
-
 thankyou.
