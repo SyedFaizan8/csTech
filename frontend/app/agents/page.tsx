@@ -1,15 +1,15 @@
 'use client'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store/store'
-import { fetchAgents, deleteAgent } from '../../store/slices/agentsSlice'
-import AgentForm from '../../components/AgentForm'
-import AgentCard from '../../components/AgentCard'
-import useRequireAuth from '../../hooks/useRequireAuth'
-import api from '../../lib/api'
-import { push } from '../../store/slices/notificationsSlice'
-import Modal from '../../components/Modal'
-import ConfirmModal from '../../components/ConfirmModal'
-import Pagination from '../../components/Pagination'
+import { useAppDispatch, useAppSelector } from '@/store/store'
+import { fetchAgents, deleteAgent } from '@/store/slices/agentsSlice'
+import AgentForm from '@/components/AgentForm'
+import AgentCard from '@/components/AgentCard'
+import useRequireAuth from '@/hooks/useRequireAuth'
+import api from '@/lib/api'
+import { push } from '@/store/slices/notificationsSlice'
+import Modal from '@/components/Modal'
+import ConfirmModal from '@/components/ConfirmModal'
+import Pagination from '@/components/Pagination'
 
 export default function AgentsPage() {
     useRequireAuth()
@@ -151,17 +151,17 @@ export default function AgentsPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {loading ? (
                                 <div>Loading agents...</div>
-                            ) : (
-                                paginated.map((a) => (
-                                    <AgentCard
-                                        key={a.id}
-                                        agent={a}
-                                        assignedCount={countsByAgent.get(a.id) || 0}
-                                        onViewAssigned={() => handleViewAssigned(a.id, a.name)}
-                                        onDelete={() => handleRequestDelete(a.id, a.name)}
-                                    />
-                                ))
-                            )}
+                            ) : (paginated.length > 0 ? paginated.map((a) => (
+                                <AgentCard
+                                    key={a.id}
+                                    agent={a}
+                                    assignedCount={countsByAgent.get(a.id) || 0}
+                                    onViewAssigned={() => handleViewAssigned(a.id, a.name)}
+                                    onDelete={() => handleRequestDelete(a.id, a.name)}
+                                />
+                            ))
+                                : <div>No agents yet...</div>)}
+
                         </div>
 
                         {/* single pagination (kept at the bottom) */}

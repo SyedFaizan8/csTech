@@ -49,7 +49,7 @@ export default function UploadPage() {
           {previewRows ? (
             <div className="overflow-auto">
               <table className="min-w-full text-sm">
-                <thead className="bg-slate-50 sticky top-0">
+                <thead className="sticky top-0">
                   <tr>
                     <th className="p-2 text-left">First Name</th>
                     <th className="p-2 text-left">Phone</th>

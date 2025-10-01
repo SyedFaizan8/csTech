@@ -55,14 +55,20 @@ router.post("/", requireAuth, upload.single("file"), async (req: any, res) => {
     try {
         const items = await parseFile(req.file.path, req.file.originalname);
         const invalid = items.filter(it => !it.firstName || !it.phone);
-        if (invalid.length > 0) { await fs.unlink(req.file.path).catch(() => { }); return res.status(400).json({ ok: false, message: "Some rows missing FirstName or Phone" }); }
+        if (invalid.length > 0) {
+            await fs.unlink(req.file.path).catch(() => { });
+            return res.status(400).json({ ok: false, message: "Some rows missing FirstName or Phone" });
+        }
 
         // Save list items
         const createdItems = await Promise.all(items.map(it => prisma.listItem.create({ data: { firstName: it.firstName, phone: it.phone, notes: it.notes || "" } })));
 
         // Get 5 agents
         const agents = await prisma.agent.findMany({ orderBy: { createdAt: "asc" }, take: 5 });
-        if (agents.length < 5) { await fs.unlink(req.file.path).catch(() => { }); return res.status(400).json({ ok: false, message: "Need at least 5 agents to distribute" }); }
+        if (agents.length < 5) {
+            await fs.unlink(req.file.path).catch(() => { });
+            return res.status(400).json({ ok: false, message: "Need at least 5 agents to distribute" });
+        }
 
         const assignments = distribute(createdItems, agents);
 
